@@ -4,7 +4,6 @@
 <div class="container-fluid px-4">
     <h1 class="mt-4 mb-4">Data Iuran Warga</h1>
 
-    <!-- Menangkap Flash Message -->
     @if(Session::has('pesan'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ Session::get('pesan') }}
@@ -12,7 +11,6 @@
         </div>
     @endif
 
-    <!-- KOTAK STATISTIK (Dipindah ke atas agar lebih rapi seperti dashboard) -->
     <div class="row mb-4">
         <div class="col-xl-3 col-md-6">
             <div class="card bg-primary text-white mb-4 shadow-sm">
@@ -48,19 +46,18 @@
         </div>
     </div>
 
-    <!-- CARD UTAMA UNTUK TABEL -->
     <div class="card mb-4 shadow-sm">
         <div class="card-header d-flex justify-content-between align-items-center">
             <div>
                 <i class="fas fa-table me-1"></i>
                 Daftar Iuran Warga
             </div>
-            <!-- Tombol Tambah Data -->
+            
             <a href="{{ route('iuran.create') }}" class="btn btn-sm btn-primary">+ Tambah Data</a>
         </div>
         <div class="card-body">
             
-            <!-- Form Pencarian -->
+        
             <div class="row mb-3">
                 <div class="col-md-4 ms-auto">
                     <form action="{{ route('iuran.search') }}" method="GET">
@@ -73,7 +70,7 @@
                 </div>
             </div>
 
-            <!-- TABEL -->
+            
             @if(count($data_iuran) == 0)
                 <div class="alert alert-warning">Data tidak ditemukan.</div>
             @else
@@ -119,7 +116,7 @@
                     </table>
                 </div>
 
-                <!-- Menampilkan tombol Pagination -->
+                
                 <div class="d-flex justify-content-end mt-3">
                     {{ $data_iuran->links('pagination::bootstrap-5') }}
                 </div>

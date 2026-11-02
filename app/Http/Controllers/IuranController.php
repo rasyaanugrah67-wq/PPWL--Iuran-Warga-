@@ -44,7 +44,7 @@ class IuranController extends Controller
 
 public function store(Request $request)
     {
-        // Validasi Input Bahasa Indonesia
+       
         $this->validate($request, [
             'id_warga'    => 'required|numeric',
             'nominal'     => 'required|numeric',
@@ -61,7 +61,7 @@ public function store(Request $request)
             'status.required'      => 'Status pembayaran harus dipilih!'
         ]);
 
-        // Simpan Data ke Database
+        
         $iuran = new \App\Models\Iuran();
         $iuran->id_warga    = $request->id_warga;
         $iuran->nominal     = $request->nominal;
@@ -70,20 +70,19 @@ public function store(Request $request)
         $iuran->id_periode  = 1; // Default periode
         $iuran->save();
 
-        // Kembali ke halaman index dengan Flash Message
+    
         return redirect()->route('iuran.index')->with('pesan', 'Data Iuran Berhasil Disimpan!');
     }
 
     public function edit($id)
     {
         $iuran = \App\Models\Iuran::find($id);
-        // Kirim data tersebut ke halaman form edit
         return view('iuran.edit', compact('iuran'));
     }
 
     public function update(Request $request, $id)
     {
-        //Validasi Input
+        
         $this->validate($request, [
             'id_warga'    => 'required|numeric',
             'nominal'     => 'required|numeric',
@@ -91,7 +90,6 @@ public function store(Request $request)
             'status'      => 'required|string'
         ]);
 
-        // Cari data lama dan timpa dengan data baru
         $iuran = \App\Models\Iuran::find($id);
         $iuran->id_warga    = $request->id_warga;
         $iuran->nominal     = $request->nominal;
@@ -128,7 +126,6 @@ public function store(Request $request)
             $iuran->delete();
         }
         
-        // Flash Message setelah dihapus
         return redirect()->route('iuran.index')->with('pesan', 'Data Iuran berhasil dihapus!');
     }
 }

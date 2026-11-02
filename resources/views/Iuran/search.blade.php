@@ -4,23 +4,23 @@
 <div class="container mt-5">
     <h2 class="mb-4">Pencarian Data Iuran Warga</h2>
 
-    <!-- NOTIFIKASI SUKSES PENCARIAN -->
+    
     @if(count($data_iuran))
         <div class="alert alert-success">
             Ditemukan <strong>{{ count($data_iuran) }}</strong> data dengan kata kunci: <strong>{{ $cari }}</strong>
         </div>
     @endif
 
-    <!-- FORM PENCARIAN -->
+    
     <form action="{{ route('iuran.search') }}" method="GET" class="mb-4">
         @csrf
         <input type="text" name="kata" class="form-control" placeholder="Cari..." value="{{ $cari ?? '' }}" style="width: 30%; display: inline; margin-top: 10px; margin-bottom: 10px;">
         <button type="submit" class="btn btn-primary btn-sm">Cari</button>
     </form>
 
-    <!-- PERINGATAN KOSONG -->
+    
     @if(count($data_iuran) == 0)
-        <!-- NOTIFIKASI GAGAL / TIDAK DITEMUKAN -->
+
         <div class="alert alert-warning">
             <h4>Data {{ $cari }} tidak ditemukan</h4>
             <a href="{{ route('iuran.index') }}" class="btn btn-warning mt-2">Kembali</a>

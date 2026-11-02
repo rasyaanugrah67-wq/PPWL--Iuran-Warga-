@@ -8,7 +8,6 @@
         </div>
         <div class="card-body">
             
-            <!-- Pesan Error Validasi -->
             @if (count($errors) > 0)
                 <ul class="alert alert-danger">
                     @foreach ($errors->all() as $error)
@@ -17,7 +16,6 @@
                 </ul>
             @endif
 
-            <!-- Form Edit mengarah ke route update dengan ID spesifik -->
             <form action="{{ route('iuran.update', $iuran->id_iuran) }}" method="POST">
                 @csrf
                 
@@ -33,7 +31,6 @@
 
                 <div class="mb-3">
                     <label>Tanggal Jatuh Tempo</label>
-                    <!-- Menampilkan tanggal lama dan tetap memakai Datepicker -->
                     <input type="text" id="jatuh_tempo" name="jatuh_tempo" class="date form-control" value="{{ \Carbon\Carbon::parse($iuran->jatuh_tempo)->format('Y/m/d') }}">
                 </div>
 

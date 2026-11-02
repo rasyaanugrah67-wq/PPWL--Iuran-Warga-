@@ -8,7 +8,6 @@
         </div>
         <div class="card-body">
             
-            <!-- Tempat memunculkan pesan error validasi -->
             @if (count($errors) > 0)
                 <ul class="alert alert-danger">
                     @foreach ($errors->all() as $error)
@@ -17,7 +16,6 @@
                 </ul>
             @endif
 
-            <!-- Form mengarah ke route store untuk menyimpan data -->
             <form action="{{ route('iuran.store') }}" method="POST">
                 @csrf
                 
@@ -33,7 +31,7 @@
 
                 <div class="mb-3">
                     <label>Tanggal Jatuh Tempo</label>
-                    <!-- DATEPICKER -->
+                    
                     <input type="text" id="jatuh_tempo" name="jatuh_tempo" class="date form-control" placeholder="yyyy/mm/dd">
                 </div>
 
