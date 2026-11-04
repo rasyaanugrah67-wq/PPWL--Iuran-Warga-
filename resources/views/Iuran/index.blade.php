@@ -53,11 +53,13 @@
                 Daftar Iuran Warga
             </div>
             
-            <a href="{{ route('iuran.create') }}" class="btn btn-sm btn-primary">+ Tambah Data</a>
+            <!-- Proteksi Tombol Tambah Data -->
+            @if(Auth::check() && Auth::user()->level == 'admin')
+                <a href="{{ route('iuran.create') }}" class="btn btn-sm btn-primary">+ Tambah Data</a>
+            @endif
         </div>
+
         <div class="card-body">
-            
-        
             <div class="row mb-3">
                 <div class="col-md-4 ms-auto">
                     <form action="{{ route('iuran.search') }}" method="GET">
@@ -69,7 +71,6 @@
                     </form>
                 </div>
             </div>
-
             
             @if(count($data_iuran) == 0)
                 <div class="alert alert-warning">Data tidak ditemukan.</div>
@@ -83,7 +84,10 @@
                                 <th>Nominal</th>
                                 <th>Jatuh Tempo</th>
                                 <th>Status</th>
-                                <th>Aksi</th>
+                                <!-- Proteksi Header Kolom Aksi -->
+                                @if(Auth::check() && Auth::user()->level == 'admin')
+                                    <th>Aksi</th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody>
@@ -100,22 +104,24 @@
                                         <span class="badge bg-warning text-dark">Menunggu</span>
                                     @endif
                                 </td>
+                                
+                                <!-- Proteksi Tombol Edit dan Hapus -->
+                                @if(Auth::check() && Auth::user()->level == 'admin')
                                 <td>
-                                    <!-- Tombol Edit -->
                                     <a href="{{ route('iuran.edit', $iuran->id_iuran) }}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i> Edit</a>
 
-                                    <!-- Tombol Hapus -->
                                     <form action="{{ route('iuran.destroy', $iuran->id_iuran) }}" method="POST" class="d-inline">
                                         @csrf
+                                        @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus data ini?')"><i class="fas fa-trash"></i> Hapus</button>
                                     </form>
                                 </td>
+                                @endif
                             </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
-
                 
                 <div class="d-flex justify-content-end mt-3">
                     {{ $data_iuran->links('pagination::bootstrap-5') }}

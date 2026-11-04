@@ -54,7 +54,34 @@
                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                 Data Iuran Warga
             </a>
-            
+            <div id="layoutSidenav_nav">
+    <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+        <div class="sb-sidenav-menu">
+            <div class="nav">
+                
+                <div class="sb-sidenav-menu-heading">Menu Utama</div>
+                
+                <a class="nav-link" href="{{ url('/iuran') }}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                    Data Iuran Warga
+                </a>
+
+                @if(Auth::check() && Auth::user()->level == 'admin')
+                    <div class="sb-sidenav-menu-heading">Khusus Admin</div>
+                    <a class="nav-link" href="{{ route('users.index') }}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                        Kelola Data User
+                    </a>
+                @endif
+              
+            </div>
+        </div>
+        <div class="sb-sidenav-footer">
+            <div class="small">Login sebagai:</div>
+            {{ Auth::user()->name ?? 'Guest' }} ({{ Auth::user()->level ?? '-' }})
+        </div>
+    </nav>
+</div>
         </div>
     </div>
     <div class="sb-sidenav-footer">

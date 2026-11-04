@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\IuranController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +21,18 @@ Auth::routes([
     'register' => false,
     'reset' => false,
 ]);
+// Rute yang hanya bisa dibuka oleh pengguna yang sudah LOGIN dan berlevel ADMIN
+Route::middleware(['auth', 'admin'])->group(function () {
+    
+    // Contoh rute khusus admin
+    Route::get('/admin/users', function () {
+        return "Halaman Kelola Data User Khusus Admin";
+    })->name('admin.users');
+    
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::resource('users', UserController::class);
+});
+});
 Route::get('/iuran', [IuranController::class, 'index'])->name('iuran.index');
 Route::get('/iuran/create', [App\Http\Controllers\IuranController::class, 'create'])->name('iuran.create');
 Route::post('/iuran', [App\Http\Controllers\IuranController::class, 'store'])->name('iuran.store');

@@ -128,4 +128,10 @@ public function store(Request $request)
         
         return redirect()->route('iuran.index')->with('pesan', 'Data Iuran berhasil dihapus!');
     }
+
+    public function __construct()
+{
+    $this->middleware('auth');
+}
+
 }

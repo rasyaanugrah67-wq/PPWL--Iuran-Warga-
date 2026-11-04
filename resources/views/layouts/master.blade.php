@@ -26,6 +26,7 @@
                 autoclose: true
             });
         });
+        
     </script>
 </body>
 </html>
