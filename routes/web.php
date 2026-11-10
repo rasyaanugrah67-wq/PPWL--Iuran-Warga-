@@ -1,8 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\IuranController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PembayaranController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,30 +17,37 @@ use App\Http\Controllers\UserController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
 Route::get('/', function () {
     return redirect('/login');
 });
+
 Auth::routes([
     'register' => false,
     'reset' => false,
 ]);
-// Rute yang hanya bisa dibuka oleh pengguna yang sudah LOGIN dan berlevel ADMIN
+
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+// Rute Iuran
+Route::get('/iuran', [IuranController::class, 'index'])->name('iuran.index');
+Route::get('/iuran/create', [IuranController::class, 'create'])->name('iuran.create');
+Route::post('/iuran', [IuranController::class, 'store'])->name('iuran.store');
+Route::get('/iuran/{id}/edit', [IuranController::class, 'edit'])->name('iuran.edit');
+Route::post('/iuran/{id}', [IuranController::class, 'update'])->name('iuran.update');
+Route::post('/iuran/delete/{id}', [IuranController::class, 'destroy'])->name('iuran.destroy');
+Route::get('/iuran/search', [IuranController::class, 'search'])->name('iuran.search');
+Route::get('/iuran/bayar/{id}', [App\Http\Controllers\IuranController::class, 'bayar'])->name('iuran.bayar');
+Route::post('/iuran/bayar/{id}', [App\Http\Controllers\IuranController::class, 'proses_bayar'])->name('iuran.proses_bayar');
+
 Route::middleware(['auth', 'admin'])->group(function () {
     
-    // Contoh rute khusus admin
     Route::get('/admin/users', function () {
         return "Halaman Kelola Data User Khusus Admin";
     })->name('admin.users');
     
-Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('users', UserController::class);
-});
-});
-Route::get('/iuran', [IuranController::class, 'index'])->name('iuran.index');
-Route::get('/iuran/create', [App\Http\Controllers\IuranController::class, 'create'])->name('iuran.create');
-Route::post('/iuran', [App\Http\Controllers\IuranController::class, 'store'])->name('iuran.store');
-Route::get('/iuran/{id}/edit', [App\Http\Controllers\IuranController::class, 'edit'])->name('iuran.edit');
-Route::post('/iuran/{id}', [App\Http\Controllers\IuranController::class, 'update'])->name('iuran.update');
-Route::post('/iuran/delete/{id}', [App\Http\Controllers\IuranController::class, 'destroy'])->name('iuran.destroy');
-Route::get('/iuran/search', [App\Http\Controllers\IuranController::class, 'search'])->name('iuran.search');
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    
+    Route::resource('pembayaran', PembayaranController::class);
+
+});     

@@ -16,7 +16,7 @@
                 </ul>
             @endif
 
-            <form action="{{ route('iuran.store') }}" method="POST">
+            <form action="{{ route('iuran.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 
                 <div class="mb-3">
@@ -31,7 +31,6 @@
 
                 <div class="mb-3">
                     <label>Tanggal Jatuh Tempo</label>
-                    
                     <input type="text" id="jatuh_tempo" name="jatuh_tempo" class="date form-control" placeholder="yyyy/mm/dd">
                 </div>
 
@@ -43,9 +42,16 @@
                     </select>
                 </div>
 
+                <div class="mb-4">
+                    <label>Bukti Pembayaran (Opsional)</label>
+                    <input type="file" name="bukti_pembayaran" class="form-control" accept="image/*">
+                    <small class="text-muted">Format: JPG, JPEG, PNG. Maksimal: 2MB.</small>
+                </div>
+
                 <button type="submit" class="btn btn-success">Simpan Data</button>
                 <a href="{{ route('iuran.index') }}" class="btn btn-secondary">Kembali</a>
             </form>
         </div>
-    </div> 
+    </div>
+</div>
 @endsection

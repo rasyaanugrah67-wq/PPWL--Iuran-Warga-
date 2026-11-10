@@ -20,7 +20,6 @@
                                 <div class="card shadow-lg border-0 rounded-lg mt-5">
                                     <div class="card-header"><h3 class="text-center font-weight-light my-4">Login</h3></div>
                                     <div class="card-body">
-                                        <!-- Form yang sudah dihubungkan ke sistem login Laravel -->
                                         <form method="POST" action="{{ route('login') }}">
                                             @csrf
                                             
@@ -64,7 +63,6 @@
             </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <!-- Pastikan JS menggunakan asset() juga -->
         <script src="{{ asset('js/scripts.js') }}"></script>
     </body>
 </html>

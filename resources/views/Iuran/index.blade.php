@@ -53,7 +53,7 @@
                 Daftar Iuran Warga
             </div>
             
-            <!-- Proteksi Tombol Tambah Data -->
+            <!-- Proteksi Tombol Tambah Data: Hanya Admin -->
             @if(Auth::check() && Auth::user()->level == 'admin')
                 <a href="{{ route('iuran.create') }}" class="btn btn-sm btn-primary">+ Tambah Data</a>
             @endif
@@ -76,28 +76,26 @@
                 <div class="alert alert-warning">Data tidak ditemukan.</div>
             @else
                 <div class="table-responsive">
-                    <table class="table table-bordered table-striped table-hover mt-3">
-                        <thead class="table-dark">
+                    <table class="table table-bordered table-striped table-hover mt-3 align-middle">
+                        <thead class="table-dark text-center">
                             <tr>
                                 <th>No</th>
                                 <th>Nama Warga</th>
                                 <th>Nominal</th>
                                 <th>Jatuh Tempo</th>
                                 <th>Status</th>
-                                <!-- Proteksi Header Kolom Aksi -->
-                                @if(Auth::check() && Auth::user()->level == 'admin')
-                                    <th>Aksi</th>
-                                @endif
+                                <th>Bukti Pembayaran</th>
+                                <th>Aksi</th> 
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($data_iuran as $index => $iuran)
                             <tr>
-                                <td>{{ $data_iuran->firstItem() + $index }}</td>
+                                <td class="text-center">{{ $data_iuran->firstItem() + $index }}</td>
                                 <td>{{ $iuran->warga->nama ?? 'Tidak Diketahui' }}</td>
                                 <td>Rp {{ number_format($iuran->nominal, 0, ',', '.') }}</td>
-                                <td>{{ \Carbon\Carbon::parse($iuran->jatuh_tempo)->format('d/m/Y') }}</td>
-                                <td>
+                                <td class="text-center">{{ \Carbon\Carbon::parse($iuran->jatuh_tempo)->format('d/m/Y') }}</td>
+                                <td class="text-center">
                                     @if($iuran->status == 'Lunas')
                                         <span class="badge bg-success">Lunas</span>
                                     @else
@@ -105,18 +103,42 @@
                                     @endif
                                 </td>
                                 
-                                <!-- Proteksi Tombol Edit dan Hapus -->
-                                @if(Auth::check() && Auth::user()->level == 'admin')
-                                <td>
-                                    <a href="{{ route('iuran.edit', $iuran->id_iuran) }}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i> Edit</a>
-
-                                    <form action="{{ route('iuran.destroy', $iuran->id_iuran) }}" method="POST" class="d-inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus data ini?')"><i class="fas fa-trash"></i> Hapus</button>
-                                    </form>
+                                <!-- Menampilkan Gambar Bukti -->
+                                <td class="text-center">
+                                    @if($iuran->bukti_pembayaran)
+                                        <a href="{{ asset('storage/' . $iuran->bukti_pembayaran) }}" target="_blank">
+                                            <img src="{{ asset('storage/' . $iuran->bukti_pembayaran) }}" alt="Bukti" class="img-thumbnail" style="max-height: 80px; max-width: 80px; object-fit: cover;">
+                                        </a>
+                                    @else
+                                        <span class="text-muted small">Tidak ada</span>
+                                    @endif
                                 </td>
-                                @endif
+                                
+                                <!-- Kolom Aksi Dinamis -->
+                                <td class="text-center">
+                                    @if(Auth::check() && Auth::user()->level == 'admin')
+                                        <!-- Tampilan Jika Login Sebagai Admin -->
+                                        <a href="{{ route('iuran.edit', $iuran->id_iuran) }}" class="btn btn-sm btn-warning mb-1"><i class="fas fa-edit"></i> Edit</a>
+                                        <form action="{{ route('iuran.destroy', $iuran->id_iuran) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-danger mb-1" onclick="return confirm('Yakin ingin menghapus data ini?')"><i class="fas fa-trash"></i> Hapus</button>
+                                        </form>
+                                    @else
+                                        <!-- Tampilan Jika Login Sebagai Warga -->
+                                        @if($iuran->status == 'Menunggu')
+                                            @if($iuran->bukti_pembayaran)
+                                                <span class="badge bg-info text-dark">Menunggu Verifikasi Admin</span>
+                                            @else
+                                                <a href="{{ route('iuran.bayar', $iuran->id_iuran) }}" class="btn btn-sm btn-primary">
+                                                    <i class="fas fa-upload"></i> Upload Bukti
+                                                </a>
+                                            @endif
+                                        @else
+                                            <span class="badge bg-success"><i class="fas fa-check"></i> Selesai</span>
+                                        @endif
+                                    @endif
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>

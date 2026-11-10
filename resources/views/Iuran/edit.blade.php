@@ -16,7 +16,8 @@
                 </ul>
             @endif
 
-            <form action="{{ route('iuran.update', $iuran->id_iuran) }}" method="POST">
+            <!-- PASTIKAN ADA enctype="multipart/form-data" -->
+            <form action="{{ route('iuran.update', $iuran->id_iuran) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 
                 <div class="mb-3">
@@ -40,6 +41,22 @@
                         <option value="Menunggu" {{ $iuran->status == 'Menunggu' ? 'selected' : '' }}>Menunggu</option>
                         <option value="Lunas" {{ $iuran->status == 'Lunas' ? 'selected' : '' }}>Lunas</option>
                     </select>
+                </div>
+
+                <!-- KOLOM BARU: PREVIEW & UPLOAD BUKTI PEMBAYARAN -->
+                <div class="mb-4">
+                    <label>Bukti Pembayaran Baru (Opsional)</label>
+                    
+                    <!-- Menampilkan gambar lama jika sudah ada di database -->
+                    @if($iuran->bukti_pembayaran)
+                        <div class="mb-3">
+                            <img src="{{ asset('storage/' . $iuran->bukti_pembayaran) }}" alt="Bukti Pembayaran Lama" class="img-thumbnail" style="max-height: 150px; max-width: 100%;">
+                            <div class="mt-1"><small class="text-muted">Gambar bukti pembayaran saat ini.</small></div>
+                        </div>
+                    @endif
+                    
+                    <input type="file" name="bukti_pembayaran" class="form-control" accept="image/*">
+                    <small class="text-muted">Biarkan kosong jika tidak ingin mengubah gambar. Format: JPG, JPEG, PNG. Maksimal: 2MB.</small>
                 </div>
 
                 <button type="submit" class="btn btn-success">Update Data</button>

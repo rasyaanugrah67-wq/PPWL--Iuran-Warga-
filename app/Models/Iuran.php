@@ -7,7 +7,7 @@ class Iuran extends Model
 {
     protected $table = 'iuran';
     protected $primaryKey = 'id_iuran';
-    protected $fillable = ['id_warga', 'id_periode', 'nominal', 'jatuh_tempo', 'status'];
+    protected $fillable = ['id_warga', 'id_periode', 'nominal', 'jatuh_tempo', 'status', 'bukti_pembayaran'];
     protected $casts = [
         'jatuh_tempo' => 'date',
     ];
