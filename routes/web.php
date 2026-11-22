@@ -6,6 +6,7 @@ use App\Http\Controllers\IuranController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\GaleriController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,6 +40,8 @@ Route::post('/iuran/delete/{id}', [IuranController::class, 'destroy'])->name('iu
 Route::get('/iuran/search', [IuranController::class, 'search'])->name('iuran.search');
 Route::get('/iuran/bayar/{id}', [App\Http\Controllers\IuranController::class, 'bayar'])->name('iuran.bayar');
 Route::post('/iuran/bayar/{id}', [App\Http\Controllers\IuranController::class, 'proses_bayar'])->name('iuran.proses_bayar');
+Route::get('/galeri', [GaleriController::class, 'index'])->name('galeri.index');
+Route::get('/detail-galeri/{seo}', [GaleriController::class, 'detail'])->name('galeri.detail');
 
 Route::middleware(['auth', 'admin'])->group(function () {
     
@@ -47,7 +50,11 @@ Route::middleware(['auth', 'admin'])->group(function () {
     })->name('admin.users');
     
     Route::resource('users', UserController::class);
-    
     Route::resource('pembayaran', PembayaranController::class);
+    Route::get('/galeri/create', [GaleriController::class, 'create'])->name('galeri.create');
+    Route::post('/galeri', [GaleriController::class, 'store'])->name('galeri.store');
+    Route::get('/galeri/{id}/edit', [GaleriController::class, 'edit'])->name('galeri.edit');
+    Route::put('/galeri/{id}', [GaleriController::class, 'update'])->name('galeri.update');
+    Route::delete('/galeri/{id}', [GaleriController::class, 'destroy'])->name('galeri.destroy');
 
 });     
